@@ -1,7 +1,7 @@
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![XGBoost](https://img.shields.io/badge/XGBoost-ML-success)
 ![PyPortfolioOpt](https://img.shields.io/badge/PyPortfolioOpt-Optimization-orange)
-![License](https://img.shields.io/badge/License-MIT-green)
+
 # FinOptix: Machine Learning Stock Selection & Portfolio Optimization
 
 An end-to-end quantitative investment framework that integrates **Machine Learning**, **Fundamental Analysis**, **Factor Investing**, and **Modern Portfolio Theory** to automate stock selection and construct risk-optimized portfolios.
