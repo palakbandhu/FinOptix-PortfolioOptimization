@@ -1,0 +1,14 @@
+BACK-TEST PERFORMANCE METRICS
+
+Benchmark Returns: 239.0625065918969%
+Portfolio Returns: 857.7857562255859%
+Total trades executed: 36
+Win rate: 33.333333333333336%
+Total Long Trades: 18
+Total Short Trades: 18
+Average Drawdown: -25.116672026177223%
+Max Drawdown: -46.95002349132768%
+Sharpe Ratio: 2.5533530780271874
+Sortino Ratio: 3.364869207564304
+Average Holding Time: 32.44444444444444 days
+Maximum Holding Time: 196 days
