@@ -4,254 +4,296 @@
 
 # FinOptix: Machine Learning Stock Selection & Portfolio Optimization
 
-An end-to-end quantitative investment framework that integrates **Machine Learning**, **Fundamental Analysis**, **Factor Investing**, and **Modern Portfolio Theory** to automate stock selection and construct risk-optimized portfolios.
+An end-to-end quantitative investment framework that combines **Machine Learning**, **Fundamental Analysis**, and **Modern Portfolio Theory** to automate stock selection and portfolio construction.
 
-The framework predicts stock returns using **XGBoost**, ranks stocks using a hybrid scoring mechanism, optimizes allocations with the **Black-Litterman** and **Markowitz Mean-Variance Optimization** models, and evaluates performance through historical backtesting.
+The pipeline predicts future stock returns using **XGBoost**, ranks stocks using both technical and fundamental factors, constructs an optimized portfolio using the **Black-Litterman Model** and **Markowitz Mean-Variance Optimization**, and evaluates performance through historical backtesting.
 
 ---
 
-## Overview
+##  Highlights
 
-The project follows the complete quantitative investment workflow:
+-  Machine Learning based stock return prediction using XGBoost
+-  Technical indicator based feature engineering
+-  Fundamental factor based stock ranking
+-  Portfolio Optimization using Black-Litterman Model
+-  Mean-Variance Optimization (Markowitz)
+-  Fama-French Three Factor Model integration
+-  Historical backtesting with comprehensive risk metrics
+-  Performance comparison against benchmark portfolio
 
-```
+---
+
+# Project Pipeline
+
+```text
 Historical Market Data
         │
         ▼
- Feature Engineering
+Feature Engineering
         │
         ▼
- XGBoost Return Prediction
+XGBoost Return Prediction
         │
         ▼
- Fundamental Stock Scoring
+Fundamental + ML Stock Ranking
         │
         ▼
- Top Stock Selection
+Top Stock Selection
         │
         ▼
- Black-Litterman Portfolio
+Black-Litterman Model
         │
         ▼
- Mean-Variance Optimization
+Mean-Variance Optimization
         │
         ▼
- Historical Backtesting
+Optimal Portfolio Allocation
         │
         ▼
- Performance Evaluation
+Historical Backtesting
+        │
+        ▼
+Performance Evaluation
 ```
 
 ---
 
-# Features
+# Data Collection
 
-## Machine Learning Stock Selection
+- **Universe:** NIFTY 50 Stocks
+- **Historical Data:** Yahoo Finance (yFinance API)
+- **Training Period:** March 2022 – May 2024
+- **Testing Period:** June 2024 – July 2025
 
-- XGBoost regression model for stock return prediction
-- Individual models trained for each NIFTY 50 stock
-- Out-of-sample prediction on unseen market data
-- Correlation and RMSE based evaluation
+Additional fundamental features:
+
+- Price-to-Earnings Ratio (P/E)
+- Debt-to-Equity Ratio
+- Market Capitalization
 
 ---
 
-## Feature Engineering
+# Feature Engineering
 
-Generated multiple technical indicators including
+Technical indicators generated include:
 
 - Daily Returns
 - Rolling Volatility
-- Moving Averages (10-Day & 50-Day)
-- Momentum Indicators
+- 10-Day Moving Average
+- 50-Day Moving Average
+- 10-Day Momentum
+- 50-Day Momentum
 - Bollinger Bands
 - Lagged Returns
 - Volume Correlation
 
+These features are used to predict future stock returns.
+
 ---
 
-## Fundamental Analysis
+# Machine Learning Model
 
-Stocks are ranked using a weighted combination of
+Each stock is assigned an independent **XGBoost Regression** model.
+
+### Model Parameters
+
+```python
+objective = "reg:squarederror"
+n_estimators = 2000
+learning_rate = 0.01
+max_depth = 12
+subsample = 0.8
+colsample_bytree = 0.8
+random_state = 42
+```
+
+Evaluation metrics:
+
+- RMSE
+- Correlation Coefficient
+
+The predicted returns are later used for portfolio construction.
+
+---
+
+# Stock Ranking Framework
+
+Stocks are scored using a weighted combination of:
 
 - Expected Return (Predicted by XGBoost)
-- Price-to-Earnings Ratio
+- P/E Ratio
 - Debt-to-Equity Ratio
 - Market Capitalization
 
-The framework selects the **Top 20 stocks** with the highest composite scores.
+The weighting scheme is user configurable.
+
+The highest ranked stocks are selected for portfolio optimization.
 
 ---
 
-## Portfolio Optimization
+## Top Ranked Stocks
 
-Implemented multiple quantitative portfolio construction techniques
-
-- Markowitz Mean-Variance Optimization
-- Black-Litterman Bayesian Portfolio Model
-- Fama-French Three-Factor Model
-- Efficient Frontier Analysis
-- Maximum Sharpe Ratio Optimization
+<p align="center">
+<img src="images/image2.png" width="850">
+</p>
 
 ---
 
-## Risk Management
+## Fundamental Metric Comparison
 
-The project incorporates practical trading constraints including
-
-- Long & Short Positions
-- Dynamic Portfolio Allocation
-- Risk-adjusted Optimization
-- Historical Portfolio Simulation
+<p align="center">
+<img src="images/image3.png" width="850">
+</p>
 
 ---
 
-# Data
+# Portfolio Optimization
 
-**Universe**
+After selecting the best-performing stocks, portfolio weights are generated using:
 
-- NIFTY 50 Constituents
+## Mean-Variance Optimization
 
-**Historical Data Source**
+- Expected Return Maximization
+- Risk Minimization
+- Efficient Frontier
 
-- Yahoo Finance (yFinance API)
+## Black-Litterman Model
 
-**Training Period**
+The framework combines
 
-- March 2022 – May 2024
+- Market Equilibrium Returns
+- Investor Views
+- Bayesian Updating
 
-**Prediction Period**
+to produce more stable and realistic portfolio allocations.
 
-- June 2024 – July 2025
+Optimization objective:
 
----
+- Maximum Sharpe Ratio
 
-# Technologies Used
-
-- Python
-- Pandas
-- NumPy
-- XGBoost
-- Scikit-Learn
-- PyPortfolioOpt
-- Matplotlib
-- Yahoo Finance API
+Implemented using **PyPortfolioOpt**.
 
 ---
 
-# Workflow
+## Portfolio Weight Comparison
 
-### 1. Data Collection
+<p align="center">
+<img src="images/image5.png" width="850">
+</p>
 
-- Download historical prices
-- Retrieve company fundamentals
-- Clean missing observations
+---
 
-### 2. Feature Engineering
+# Backtesting Framework
 
-Generate predictive technical indicators and market statistics.
+The optimized portfolio is evaluated using historical data.
 
-### 3. Machine Learning
+The framework computes
 
-Train XGBoost regression models independently for every stock.
+- Portfolio Returns
+- Benchmark Returns
+- Sharpe Ratio
+- Sortino Ratio
+- Maximum Drawdown
+- Average Drawdown
+- Trade Statistics
+- Holding Period
+- Win Rate
 
-### 4. Stock Ranking
-
-Combine
-
-- ML predicted returns
-- P/E score
-- Debt-to-Equity score
-- Market Capitalization score
-
-into a weighted ranking model.
-
-### 5. Portfolio Construction
-
-Generate optimal portfolio weights using
-
-- Black-Litterman Model
-- Mean-Variance Optimization
-
-### 6. Evaluation
-
-Compare optimized portfolio against an equal-weight benchmark using historical simulations.
+Both Long and Short trades are supported.
 
 ---
 
 # Results
 
-## Stock Selection
-
-- Successfully developed a hybrid stock ranking framework combining **machine learning predictions** with **fundamental financial metrics**.
-- Generated expected returns using **XGBoost regression** trained on engineered technical indicators.
-- Ranked and selected the **Top 20 NIFTY 50 stocks** through a weighted multi-factor scoring model.
-
----
-
-## Portfolio Optimization
-
-The selected stocks were optimized using the **Black-Litterman Bayesian framework**, followed by **Markowitz Mean-Variance Optimization** to generate a risk-adjusted portfolio with maximum Sharpe Ratio.
-
-The optimized portfolio was benchmarked against an equal-weight portfolio using historical simulations.
-
----
-
-## Visualizations
-
-The project includes
-
-- Actual vs Predicted Returns
-- Top Stock Rankings
-- Fundamental Metric Comparisons
-- Portfolio Allocation Comparison
-- Portfolio Performance Curves
-- Correlation & RMSE Analysis
-- Efficient Frontier
+| Metric | Value |
+|---------|-------|
+| **Portfolio Return** | **857.79%** |
+| **Benchmark Return** | **239.06%** |
+| **Sharpe Ratio** | **2.55** |
+| **Sortino Ratio** | **3.36** |
+| **Maximum Drawdown** | **46.95%** |
+| **Average Drawdown** | **25.12%** |
+| **Total Trades** | **36** |
+| **Long Trades** | **18** |
+| **Short Trades** | **18** |
+| **Win Rate** | **33.33%** |
+| **Average Holding Time** | **32.44 Days** |
+| **Maximum Holding Time** | **196 Days** |
 
 ---
 
-# Future Improvements
+## Performance Comparison
 
-- Transaction Cost Modeling
-- Dynamic Portfolio Rebalancing
-- Macroeconomic Indicators
-- Sentiment Analysis
-- Sector Rotation Models
-- Reinforcement Learning based Portfolio Allocation
-- Live Paper Trading Support
+<p align="center">
+<img src="images/image6.png" width="900">
+</p>
+
+---
+
+# Technologies Used
+
+| Category | Libraries |
+|----------|-----------|
+| Programming | Python |
+| Data Analysis | Pandas, NumPy |
+| Machine Learning | XGBoost, Scikit-Learn |
+| Portfolio Optimization | PyPortfolioOpt |
+| Visualization | Matplotlib |
+| Data Source | Yahoo Finance (yFinance) |
 
 ---
 
 # Repository Structure
 
-```
-├── data/
+```text
+.
 ├── notebooks/
-├── models/
+│   ├── stock_selection.ipynb
+│   ├── portfolio_optimization.ipynb
+│
 ├── reports/
-├── plots/
-├── utils/
+│   ├── efficient_stock_selection_report.pdf
+│
+├── images/
+│   ├── top_stocks.png
+│   ├── fundamental_scores.png
+│   ├── portfolio_weights.png
+│   ├── cumulative_returns.png
+│
 ├── README.md
 └── requirements.txt
 ```
 
 ---
 
-# Key Concepts
+# Future Improvements
 
-- Machine Learning for Financial Forecasting
-- Quantitative Stock Selection
-- Feature Engineering
-- Factor Investing
-- Black-Litterman Portfolio Optimization
-- Markowitz Mean-Variance Optimization
-- Fama-French Three-Factor Model
-- Efficient Frontier
-- Risk-Adjusted Portfolio Construction
-- Historical Backtesting
+- Live portfolio rebalancing
+- Transaction cost modelling
+- Slippage simulation
+- Sentiment Analysis from News
+- Macroeconomic indicators
+- Transformer/LSTM based forecasting
+- Reinforcement Learning based portfolio allocation
 
 ---
 
-## Acknowledgements
+# Key Takeaways
 
-This project was developed as part of the **Finance and Data Analytics Club (FinOptix), IIT Kanpur**, combining quantitative finance, machine learning, and portfolio optimization techniques for systematic investment analysis.
+- Machine Learning effectively identifies stocks with strong return potential.
+- Combining technical indicators with company fundamentals improves stock selection.
+- Black-Litterman generates more robust portfolio weights than traditional optimization.
+- Historical backtesting demonstrates superior returns over the benchmark while maintaining strong risk-adjusted performance.
+
+---
+
+# References
+
+- Harry Markowitz — Modern Portfolio Theory
+- Black-Litterman Portfolio Model
+- Fama-French Three-Factor Model
+- XGBoost Documentation
+- PyPortfolioOpt
+- Yahoo Finance API
+
+---
